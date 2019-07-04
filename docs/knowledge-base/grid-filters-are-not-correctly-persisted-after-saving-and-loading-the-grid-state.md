@@ -136,3 +136,41 @@ Programmatically apply the time offset before the filter is set again.
     </div>
 
 ```
+
+Their can be a different way to this:
+As we know if u will refresh the page then Date column filter values are in correct format, but if u externally change data source of grid then once data has been loaded grid date column filter format doesn't work properly /'D316444641646'/ something like this:
+$.ajax ....{
+...//Get Data from action method by passign filter values
+success: funciton(data){
+...
+$('gridName').setDatasource(data); //After this date format doesn't work, grid unable to retain the state.
+}
+
+to resolve this u can refresh <Div> inside which grid has been created instead of refreshing the whole page.
+for Example: -
+--------------------Code  ------------------
+
+<div id="updateView">
+@Html.Action("PartialViewName", "controller", new {parameters: @parameters} 
+//It will return whole grid partial view as result inside the div 
+</div>
+
+
+function filterData(partialViewAsResult){
+
+$.ajax .....
+
+success: funciton(result){
+      $("#updateView").empty();
+      $("#updateView").html(partialViewAsResult); 
+      //instead of setting the data source of grid u can refresh the whole grid with filtered parameters :) it will definately work
+      //suggestions are welcome :)
+      //Akhilesh
+
+}
+.....
+}
+
+-------------------------------------------------------
+ 
+
